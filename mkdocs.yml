@@ -77,11 +77,11 @@ extra:
       link: /dev000/
       lang: en
 
-nav:
-  - Home:
-    - index.md
+# nav:
+#   - Home:
+#     - index.md
 
-  - "General Design":
-    - general-design/index.md
-    - general-design/design-philosophy.md
+#   - "General Design":
+#     - general-design/index.md
+#     - general-design/design-philosophy.md
 
