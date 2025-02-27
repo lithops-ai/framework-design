@@ -83,4 +83,5 @@ nav:
 
   - "General Design":
     - general-design/index.md
+    - general-design/design-philosophy.md
 
