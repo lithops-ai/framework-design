@@ -28,7 +28,4 @@ Open up `http://localhost:8000` in the browser and see the documentation!
 ## Adding Documentation Files
 
 Add markdown files in the `docs` folder.
-After a file is added,
-the `nav` section in `mkdocs.yml` must be updated
-for the static website to include it.
-See the bottom of `mkdocs.yml` for how to do this.
+Toctree is generated automatically from the file structure.

@@ -1,0 +1,29 @@
+# village CRD
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: villages.village.example.com
+spec:
+  group: village.example.com
+  names:
+    kind: Village
+    plural: villages
+    singular: village
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                village_name:
+                  type: string
+                villagers:
+                  type: array
+                  items:
+                    type: string  # 这里可以是与村民名字关联的字段，或者是其他的村民 ID
