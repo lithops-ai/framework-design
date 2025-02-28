@@ -1,0 +1,1363 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Design Documentation for the Lithops Multi-Agent Framework">
+      
+      
+        <meta name="author" content="The CogFuture Team">
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../general-design/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.5">
+    
+    
+      
+        <title>Lithops - Communication Mechanism Design - Lithops Design Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lithops-communication-mechanism-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Lithops Design Docs" class="md-header__button md-logo" aria-label="Lithops Design Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lithops Design Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lithops - Communication Mechanism Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/dev000/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Lithops Design Docs
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Communication mechanism design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../general-design/" class="md-tabs__link">
+          
+  
+  General design
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lithops Design Docs" class="md-nav__button md-logo" aria-label="Lithops Design Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lithops Design Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lithops Design Docs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Communication mechanism design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Communication mechanism design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Lithops - Communication Mechanism Design
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Lithops - Communication Mechanism Design
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goals-and-background" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Goals and Background
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-high-level-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. High-Level Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-key-requirements-and-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Key Requirements and Challenges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-logical-layer-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Logical Layer Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Logical Layer Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Core Concepts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Implementation Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-simplified-crd-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Simplified CRD Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 Simplified CRD Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511-channel-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 Channel CRD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512-thread-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2 Thread CRD
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521-channel-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.1 Channel Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522-thread-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.2 Thread Operator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-collaborationpolicyservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 CollaborationPolicyService
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-mq-selection-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 MQ Selection and Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-typical-messaging-workflow-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Typical Messaging Workflow Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-advantages-and-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Advantages and Value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    General design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            General design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../general-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lithops General Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../general-design/design-philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Philosophy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../general-design/entity-component-system/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entity Component System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goals-and-background" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Goals and Background
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-high-level-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. High-Level Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-key-requirements-and-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Key Requirements and Challenges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-logical-layer-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Logical Layer Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Logical Layer Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Core Concepts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Implementation Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-simplified-crd-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Simplified CRD Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 Simplified CRD Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511-channel-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 Channel CRD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512-thread-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2 Thread CRD
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521-channel-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.1 Channel Operator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522-thread-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.2 Thread Operator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-collaborationpolicyservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 CollaborationPolicyService
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-mq-selection-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 MQ Selection and Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-typical-messaging-workflow-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Typical Messaging Workflow Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-advantages-and-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Advantages and Value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lithops-communication-mechanism-design">Lithops - Communication Mechanism Design</h1>
+<h2 id="1-goals-and-background">1. Goals and Background</h2>
+<ol>
+<li>In large-scale distributed applications, it is necessary to provide a "real-time communication + topic/subtopic" based collaborative model for millions of dispersed Agents (deployed across cloud, edge, IoT devices, etc.).</li>
+<li>The goal is to enable Agents to interact hierarchically through a "Discord-like" user experience, structured around “Channel-Thread-Message,” while supporting access control, group management, attachment handling, message history tracking, and other features.</li>
+<li>Within cloud-native ecosystems, the solution should leverage Kubernetes CRD + Operator to achieve declarative configuration and fully automated operations. However, it must avoid mapping millions of Agent identities or messages directly onto etcd to minimize overloading the Kubernetes control plane.</li>
+</ol>
+<h2 id="2-high-level-architecture">2. High-Level Architecture</h2>
+<p>To ensure high concurrency and scalability, the system is divided into the following core components:</p>
+<ol>
+<li>
+<p><strong>Kubernetes API Server / etcd</strong></p>
+<ul>
+<li>Only stores essential metadata such as "Channels/Threads" (as CRDs) and small summaries like "Groups" or access control information.</li>
+<li>Does not store millions of Agent identities or message histories.</li>
+</ul>
+</li>
+<li>
+<p><strong>Message Queue System (MQ)</strong></p>
+<ul>
+<li>Systems like NATS, RabbitMQ, Kafka, etc., are used to handle large-scale, real-time, high-throughput message distribution.</li>
+<li>Each Channel or Thread corresponds to a Subject/Topic/Queue in the MQ system, enabling isolation similar to "Discord Channels-Threads."</li>
+</ul>
+</li>
+<li>
+<p><strong>CollaborationPolicyService (External Identity + Access Control Management)</strong></p>
+<ul>
+<li>An independent service that manages Agent identities (IDs), Groups, and Role information, as well as access control policies for collaboration scenarios.</li>
+<li>Operators and the MQ system consult this service to verify Agent permissions for Channels/Threads; simultaneously, Agent clients must authenticate through this service before connecting.</li>
+</ul>
+</li>
+<li>
+<p><strong>Channel/Thread Operator</strong></p>
+<ul>
+<li>Monitors Channel and Thread CRDs defined in Kubernetes, automating the creation and update of their corresponding topics/routing policies in the MQ system.</li>
+<li>Interacts with CollaborationPolicyService to grant/revoke group access to Channels/Threads without creating a large number of RoleBindings in Kubernetes.</li>
+</ul>
+</li>
+<li>
+<p><strong>Agents (Millions of Instances)</strong></p>
+<ul>
+<li>Deployed on cloud or edge nodes, these connect to the MQ system via SDKs or APIs to publish and subscribe to messages, enabling collaborative interaction.</li>
+<li>Before connecting, Agents authenticate with the CollaborationPolicyService to receive certificates or tokens, enabling their access to specific Channels/Threads.</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-key-requirements-and-challenges">3. Key Requirements and Challenges</h2>
+<ol>
+<li>
+<p><strong>Massive Scale &amp; Multi-Agent Concurrency</strong></p>
+<ul>
+<li>Millions of Agents need to communicate simultaneously, publishing/subscribing to messages with high-speed. Traditional monolithic systems are inadequate for this scale.</li>
+</ul>
+</li>
+<li>
+<p><strong>Hierarchical Access Control</strong></p>
+<ul>
+<li>Different Agents possess different roles (e.g., Owner, Moderator, Member), but each Agent's role cannot be mapped into Kubernetes RoleBindings. Access control must be externalized.</li>
+</ul>
+</li>
+<li>
+<p><strong>Real-Time Messaging and History</strong></p>
+<ul>
+<li>Similar to a “Discord-like” system, the platform must deliver low-latency message distribution while supporting searchable and replayable message history in Channels/Threads.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cloud-Native Scalability</strong></p>
+<ul>
+<li>The system should seamlessly scale within Kubernetes, leveraging Operators for fully automated operations, minimizing the need for manual management of message middleware configurations.</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-logical-layer-design">4. Logical Layer Design</h2>
+<h3 id="41-core-concepts">4.1 Core Concepts</h3>
+<ol>
+<li>
+<p><strong>Channel</strong></p>
+<ul>
+<li>Represents a discussion space for a group, topic, or major task, which can be public or private.</li>
+<li>Configurable attributes include visibility (public/private), read/write policies, persistence options, etc.</li>
+<li>Most Agents do not directly interact with Kubernetes; instead, they depend on the CollaborationPolicyService to determine whether they can “join” a given Channel.</li>
+</ul>
+</li>
+<li>
+<p><strong>Thread</strong></p>
+<ul>
+<li>A sub-discussion space within a Channel, inheriting or defining separate access permissions.</li>
+<li>Helps segregate and focus discussions to avoid overwhelming the main Channel.</li>
+</ul>
+</li>
+<li>
+<p><strong>Message</strong></p>
+<ul>
+<li>The core communication unit containing text, attachments, mentions, etc.</li>
+<li>Messaging payloads are not recommended for storage in etcd. Instead, MQ or external databases should handle them for real-time processing and historical storage.</li>
+</ul>
+</li>
+<li>
+<p><strong>Mentions</strong></p>
+<ul>
+<li>For example, “@AgentX” or “@Group,” enabling priority notifications or targeted pushing via MQ.</li>
+<li>CollaborationPolicyService resolves aliases into actual Agent IDs.</li>
+</ul>
+</li>
+<li>
+<p><strong>Roles</strong></p>
+<ul>
+<li>Owner: Manages Channel configurations, adds/removes groups.</li>
+<li>Moderator: Can administratively block specific groups or Agents (maintained through the CollaborationPolicyService).</li>
+<li>Member: Regular participants sending/receiving messages in Channels.</li>
+<li>Roles are handled exclusively in CollaborationPolicyService—not within Kubernetes itself.</li>
+</ul>
+</li>
+</ol>
+<h2 id="5-implementation-details">5. Implementation Details</h2>
+<h3 id="51-simplified-crd-design">5.1 Simplified CRD Design</h3>
+<h4 id="511-channel-crd">5.1.1 Channel CRD</h4>
+<blockquote>
+<p>Instead of maintaining RoleBinding for every individual Agent, it only contains minimal group-based metadata.</p>
+</blockquote>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agents.platform.io/v1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Channel</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor-anomaly-channel</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">visibility</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;private&quot;</span><span class="w">  </span><span class="c1"># Other values: &quot;public&quot;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">authorizedGroups</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;EdgeSensorsGroup&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;MLWorkersGroup&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">enablePersistence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">    </span><span class="c1"># Enables historical storage in MQ</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">retentionPolicy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;7d&quot;</span><span class="w">      </span><span class="c1"># Operator parses this field</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nt">status</span><span class="p">:</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nt">natsSubject</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;channels.sensors.anomaly&quot;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Active&quot;</span>
+</span></code></pre></div>
+<h4 id="512-thread-crd">5.1.2 Thread CRD</h4>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agents.platform.io/v1</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Thread</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anomaly-subanalysis</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sensor-anomaly-channel&quot;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">participantsGroups</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;AnomalyFocusedGroup&quot;</span><span class="w">  </span><span class="c1"># Can inherit from parent Channel or define separately</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sensor</span><span class="nv"> </span><span class="s">anomalies</span><span class="nv"> </span><span class="s">sub-thread&quot;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nt">status</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="nt">natsSubject</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;channels.sensors.anomaly.thread-xyz&quot;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Ongoing&quot;</span>
+</span></code></pre></div>
+<h3 id="52-operators">5.2 Operators</h3>
+<h4 id="521-channel-operator">5.2.1 Channel Operator</h4>
+<ol>
+<li><strong>Monitoring</strong> Channel CRDs for Create/Update/Delete operations.</li>
+<li>
+<p><strong>On detecting a new Channel</strong>:</p>
+<ul>
+<li>Use MQ APIs (e.g., NATS Admin) to create a corresponding topic (Subject/Topic/Queue).</li>
+<li>Update the authorization policies in CollaborationPolicyService for designated <code>authorizedGroups</code>.</li>
+<li>Adhere to <code>enablePersistence</code> and <code>retentionPolicy</code> to configure MQ persistence policies.</li>
+</ul>
+</li>
+<li>
+<p><strong>On Channel Updates</strong>:</p>
+<ul>
+<li>Adjust CollaborationPolicyService permissions if <code>authorizedGroups</code> are modified.</li>
+<li>Update MQ persistence policies if <code>enablePersistence</code> or <code>retentionPolicy</code> changes.</li>
+</ul>
+</li>
+<li>
+<p><strong>On Channel Deletion</strong>:</p>
+<ul>
+<li>Mark the MQ topic for archival or cleanup. Physically delete the topic after a delay (optional).</li>
+<li>Revoke associated authorizations in CollaborationPolicyService.</li>
+</ul>
+</li>
+</ol>
+<h4 id="522-thread-operator">5.2.2 Thread Operator</h4>
+<ol>
+<li><strong>Monitoring</strong> Thread CRDs for CRUD events.</li>
+<li>
+<p>Logic mirrors that of the Channel Operator:</p>
+<ul>
+<li>Create sub-topics in MQ for Threads.</li>
+<li>Update permitted <code>participantsGroups</code> or inherit them from the parent Channel.</li>
+</ul>
+</li>
+<li>
+<p>When Threads are archived or deleted:</p>
+<ul>
+<li>Remove related sub-topics from the MQ and adjust retention policies accordingly.</li>
+</ul>
+</li>
+</ol>
+<h3 id="53-collaborationpolicyservice">5.3 CollaborationPolicyService</h3>
+<ul>
+<li>An independent external or microservice-based system that leverages specialized databases (Postgres, Redis, NoSQL, etc.) to store identity, group, and role information for millions of Agents.</li>
+<li>Exposes APIs like <code>CheckPermission(AgentID, Subject)</code> and <code>UpdateChannelAuth(ChannelID, GroupList)</code> for use by Operators and MQ systems alike.</li>
+<li>Before an Agent attempts to join any Channel, it undergoes authentication and, upon success, receives an MQ access token allowing it to communicate securely.</li>
+</ul>
+<h3 id="54-mq-selection-and-configuration">5.4 MQ Selection and Configuration</h3>
+<p>Let’s take NATS as an example (alternatives include RabbitMQ or Kafka):</p>
+<ol>
+<li>
+<p><strong>NATS on Kubernetes</strong>:</p>
+<ul>
+<li>Deploy NATS using a Kubernetes NATS Operator for automated scaling and failover.</li>
+</ul>
+</li>
+<li>
+<p><strong>Subject Naming Convention</strong>:</p>
+<ul>
+<li>Tie Subjects to CRDs, e.g., <code>channels.&lt;channelName&gt;.threads.&lt;threadName&gt;</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>JetStream Persistence</strong>:</p>
+<ul>
+<li>With persistence enabled, set up JetStream to manage histories via automatic Message Replay mechanisms.</li>
+</ul>
+</li>
+<li>
+<p><strong>ACL and Security</strong>:</p>
+<ul>
+<li>Utilize NATS multi-tenant or Account-based ACL management. Allow group-specific tokens via CollaborationPolicyService, enabling secure logins.</li>
+</ul>
+</li>
+</ol>
+<h2 id="6-typical-messaging-workflow-example">6. Typical Messaging Workflow Example</h2>
+<ol>
+<li>
+<p><strong>Channel Creation</strong>:</p>
+<ul>
+<li>An Administrator submits a <code>Channel</code> CRD (“sensor-anomaly-channel”), specifying <code>authorizedGroups = [“EdgeSensorsGroup”, “MLWorkersGroup”]</code>.</li>
+<li>The Channel Operator:<ul>
+<li>Creates a matching NATS Subject, “channels.sensors.anomaly.”</li>
+<li>Updates CollaborationPolicyService to grant <code>EdgeSensorsGroup</code> and <code>MLWorkersGroup</code> access.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Agent Joins &amp; Sends Messages</strong>:</p>
+<ul>
+<li>AgentX (part of EdgeSensorsGroup) authenticates with CollaborationPolicyService and receives a token for “channels.sensors.anomaly.”</li>
+<li>AgentX subscribes to the topic and pushes anomaly detection messages.</li>
+</ul>
+</li>
+<li>
+<p><strong>Thread Creation</strong>:</p>
+<ul>
+<li>To deep-dive into details, a Thread CRD is created for a sub-topic (“anomaly-subanalysis”).</li>
+<li>Thread Operator provisions the NATS sub-channel and updates permissions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Historical Replay</strong>:</p>
+<ul>
+<li>If JetStream persistence is enabled, Agents can replay historical messages, or archival tasks can operate seamlessly.</li>
+</ul>
+</li>
+</ol>
+<h2 id="7-advantages-and-value">7. Advantages and Value</h2>
+<ol>
+<li>
+<p><strong>Scalability</strong>:</p>
+<ul>
+<li>Offloads identity and message management to external systems, keeping etcd and Kubernetes Control Plane lightweight.</li>
+</ul>
+</li>
+<li>
+<p><strong>Cloud-Native Integration</strong>:</p>
+<ul>
+<li>Stays declarative, leveraging Kubernetes Operators to seamlessly integrate with CRDs and external services.</li>
+</ul>
+</li>
+<li>
+<p><strong>Flexibility</strong>:</p>
+<ul>
+<li>MQ (NATS, Kafka, etc.) and CollaborationPolicyService implementations are modular—easy to swap or customize.</li>
+</ul>
+</li>
+<li>
+<p><strong>Discord-like Experience</strong>:</p>
+<ul>
+<li>Fully supports Channels, Threads, Mentions, message searchability, and hierarchical permissions.</li>
+</ul>
+</li>
+<li>
+<p><strong>Future Expansion</strong>:</p>
+<ul>
+<li>Extensible for advanced integrations, such as embedding LLMService Operators in the future.</li>
+</ul>
+</li>
+</ol>
+<h2 id="8-conclusion">8. Conclusion</h2>
+<p>This design leverages Kubernetes CRDs and Operators to declaratively automate “Channel/Thread” management while offloading large-scale identity/auth and message processing to external systems (CollaborationPolicyService + MQ).<br />
+This approach reduces Kubernetes control-plane dependency and delivers high scalability, paving the way for a “Discord-like” system for multi-Agent communication. Future extensions (e.g., AI/LLM-based collaboration) can easily integrate into this architecture, maintaining a unified cloud-native operations model.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Lithops Design Docs">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lithops Design Docs
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../general-design/" class="md-footer__link md-footer__link--next" aria-label="Next: Lithops General Design">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lithops General Design
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.copy", "content.tabs.link", "content.tooltips", "navigation.expand", "navigation.footer", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
