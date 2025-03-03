@@ -13,8 +13,10 @@
       
       
       
-        <link rel="prev" href="../design-philosophy/">
+        <link rel="prev" href="../">
       
+      
+        <link rel="next" href="../implementation-architecture/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +24,7 @@
     
     
       
-        <title>Entity Component System - Lithops Design Docs</title>
+        <title>Logical Abstraction - Lithops Design Docs</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#entity-component-system" class="md-skip">
+        <a href="#logical-abstraction" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Entity Component System
+              Logical Abstraction
             
           </span>
         </div>
@@ -220,16 +222,35 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
   
+  Home
+
+        </a>
+      </li>
     
   
-  Lithops Design Docs
 
-      </a>
-    </li>
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../general-design/" class="md-tabs__link">
+          
+  
+  General Design
+
+        </a>
+      </li>
+    
   
 
       
@@ -243,7 +264,7 @@
         <a href="../../communication-mechanism-design/" class="md-tabs__link">
           
   
-  Communication mechanism design
+  Communication Mechanism
 
         </a>
       </li>
@@ -263,7 +284,7 @@
         <a href="../" class="md-tabs__link">
           
   
-  General design
+  Entity-Component System
 
         </a>
       </li>
@@ -316,6 +337,49 @@
   
   
   
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../.." class="md-nav__link">
         
@@ -327,6 +391,14 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -359,7 +431,7 @@
             
   
   <span class="md-ellipsis">
-    Communication mechanism design
+    General Design
     
   </span>
   
@@ -370,7 +442,101 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Communication mechanism design
+            General Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general-design/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lithops General Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general-design/design-philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Design Philosophy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Communication Mechanism
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Communication Mechanism
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -427,14 +593,14 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
-    General design
+    Entity-Component System
     
   </span>
   
@@ -442,10 +608,10 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            General design
+            Entity-Component System
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -460,29 +626,7 @@
         
   
   <span class="md-ellipsis">
-    Lithops General Design
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../design-philosophy/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Design Philosophy
+    Overview
     
   </span>
   
@@ -513,7 +657,7 @@
           
   
   <span class="md-ellipsis">
-    Entity Component System
+    Logical Abstraction
     
   </span>
   
@@ -525,7 +669,7 @@
         
   
   <span class="md-ellipsis">
-    Entity Component System
+    Logical Abstraction
     
   </span>
   
@@ -546,15 +690,6 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#entity-component-system-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Entity Component System Overview
-    </span>
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#communication" class="md-nav__link">
@@ -601,6 +736,28 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Implementation Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -633,15 +790,6 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#entity-component-system-overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Entity Component System Overview
-    </span>
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#communication" class="md-nav__link">
@@ -695,8 +843,7 @@
 
 
 
-<h1 id="entity-component-system">Entity Component System</h1>
-<h2 id="entity-component-system-overview">Entity Component System Overview</h2>
+<h1 id="logical-abstraction">Logical Abstraction</h1>
 <p>Lithops employs an entity-component-system (ECS) style architecture.</p>
 <p>In this architecture, everything in a multi-agent system
 is abstracted as an <strong>actor</strong>.
@@ -793,7 +940,7 @@ This system consists of the following actors:</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../design-philosophy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Design Philosophy">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -803,11 +950,27 @@ This system consists of the following actors:</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Design Philosophy
+                Overview
               </div>
             </div>
           </a>
         
+        
+          
+          <a href="../implementation-architecture/" class="md-footer__link md-footer__link--next" aria-label="Next: Implementation Architecture">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Implementation Architecture
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
         
       </nav>
     

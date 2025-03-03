@@ -2,32 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>None./</loc>
-        <lastmod>2025-02-28</lastmod>
+        <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="None"/>
     </url>
     <url>
         <loc>Nonecommunication-mechanism-design/</loc>
-        <lastmod>2025-02-28</lastmod>
+        <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Nonecommunication-mechanism-design/"/>
     </url>
     <url>
+        <loc>Noneentity-component-system/</loc>
+        <lastmod>2025-03-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/"/>
+    </url>
+    <url>
+        <loc>Noneentity-component-system/implementation-architecture/</loc>
+        <lastmod>2025-03-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/implementation-architecture/"/>
+    </url>
+    <url>
+        <loc>Noneentity-component-system/logical-abstraction/</loc>
+        <lastmod>2025-03-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/logical-abstraction/"/>
+    </url>
+    <url>
         <loc>Nonegeneral-design/</loc>
-        <lastmod>2025-02-28</lastmod>
+        <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Nonegeneral-design/"/>
     </url>
     <url>
         <loc>Nonegeneral-design/design-philosophy/</loc>
-        <lastmod>2025-02-28</lastmod>
+        <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Nonegeneral-design/design-philosophy/"/>
-    </url>
-    <url>
-        <loc>Nonegeneral-design/entity-component-system/</loc>
-        <lastmod>2025-02-28</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="Nonegeneral-design/entity-component-system/"/>
     </url>
 </urlset>
