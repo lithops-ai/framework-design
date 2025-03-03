@@ -19,6 +19,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/"/>
     </url>
     <url>
+        <loc>Noneentity-component-system/implementation-architecture-choices/</loc>
+        <lastmod>2025-03-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/implementation-architecture-choices/"/>
+    </url>
+    <url>
         <loc>Noneentity-component-system/implementation-architecture/</loc>
         <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
@@ -29,12 +35,6 @@
         <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/logical-abstraction/"/>
-    </url>
-    <url>
-        <loc>Noneentity-component-system/runtime-component-injection/</loc>
-        <lastmod>2025-03-03</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/runtime-component-injection/"/>
     </url>
     <url>
         <loc>Nonegeneral-design/</loc>
