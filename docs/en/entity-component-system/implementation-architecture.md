@@ -10,6 +10,33 @@ distributed and decentralized entity-component systems.
 Currently, we take the third approach,
 i.e., runtime component injection.
 
+## Special Challenges with Distributed ECS
+
+Since Lithops implements distributed, large scale entity-component system,
+there are some unique challenges that do not arise in general game development.
+
+### Error Handling
+
+Lithops ECS is designed to be high-available and fault-tolerant.
+bugs or null reference errors on an actor/component must not crash the entire system.
+
+### Concurrency
+
+Concurrency is an issue rarely encountered in game development,
+because mainstream game engines are generally single-threaded
+(known as the game thread).
+Despite the performance issues,
+this is a deliberate design choice
+that eliminates concurrency-specific concerns
+for artists and game developers,
+a population with generally no strong background
+in software development and system programming.
+
+However, large-scale distributed ECS systems are
+inherently concurrent and asynchronous,
+and it is unrealistic to employ a single-threaded approach
+because the performance degradation would be unacceptable.
+
 ## Architecture Choices
 
 There are several schemes to implement the Entity-Component-System (ECS) architecture.
