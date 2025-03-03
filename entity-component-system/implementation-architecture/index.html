@@ -757,6 +757,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#runtime-component-injection_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime Component Injection
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -865,6 +874,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#runtime-component-injection_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime Component Injection
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -886,6 +904,11 @@
 <p class="admonition-title">Note</p>
 <p>This is just a tentative design.</p>
 </div>
+<p>This document discusses a number of approaches
+for implementing large-scale,
+distributed and decentralized entity-component systems.</p>
+<p>Currently, we take the third approach,
+i.e., runtime component injection.</p>
 <h2 id="architecture-choices">Architecture Choices</h2>
 <p>There are several schemes to implement the Entity-Component-System (ECS) architecture.</p>
 <h3 id="one-container-per-actor">One Container Per Actor</h3>
@@ -907,6 +930,7 @@ and hence the number of actor types,
 can be potentially large.
 If we were to create an image for each actor with a different set of components,
 the number of docker images would blow up.</li>
+<li>Does not allow adding or removing components at runtime.</li>
 </ul>
 <h3 id="one-service-per-component">One Service Per Component</h3>
 <p>In this scheme,
@@ -941,6 +965,8 @@ each instance of a component is encapsulated in its own process.</p>
 <p><strong>Pros:</strong></p>
 <ul>
 <li>Scales to large number of actors with different combinations of components.</li>
+<li>Allows dynamically adding and removing components
+  after an actor is spawned (like in game engines).</li>
 </ul>
 <p><strong>Cons:</strong></p>
 <ul>
@@ -977,12 +1003,35 @@ May look into existing sandboxing solutions like snap and AppImage.</p>
 <li>Keeps the number of packages at a minimum
 even when there are a large number of actors
 with different combinations of components.</li>
+<li>Allows dynamically adding and removing components
+after an actor is spawned (like in game engines).</li>
 </ul>
 <p><strong>Cons:</strong></p>
 <ul>
 <li>The process of component injection can introduce unexpected bugs.
 For example, if two components use the same temporary directory in the host container,
 they may interfere with each other and cause unwanted behavior even if they have no bugs on their own.</li>
+</ul>
+<h2 id="runtime-component-injection_1">Runtime Component Injection</h2>
+<p>Currently, we employ the runtime component injection approach
+for implementing the ECS architecture.</p>
+<p>The design ideas are:</p>
+<ul>
+<li>Components may be buggy so there needs to be
+some sandboxing for each component.</li>
+<li>Component sandboxing should incur minimal overhead
+since we're already inside a container.</li>
+<li>Components should be self-contained to
+avoid dependency and environment configuration issues.</li>
+</ul>
+<p>Specifically:</p>
+<ul>
+<li>Use AppImage to package each component into a self-contained binary.</li>
+<li>Use BubbleWrap to sandbox each component AppImage
+and provide a safe, ephemeral mount point for it to write to,
+similar to a Docker volume (expect that it does not persist).
+Restrict AppImages from accessing the host filesystem
+to avoid multiple components sharing the same file system and interfering with each other.</li>
 </ul>
 
 
