@@ -13,10 +13,8 @@
       
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../implementation-architecture/">
       
-      
-        <link rel="next" href="../../communication-mechanism-design/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +22,7 @@
     
     
       
-        <title>Design Philosophy - Lithops Design Docs</title>
+        <title>Runtime Component Injection Architecture - Lithops Design Docs</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#design-philosophy" class="md-skip">
+        <a href="#runtime-component-injection-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Design Philosophy
+              Runtime Component Injection Architecture
             
           </span>
         </div>
@@ -219,13 +217,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../general-design/" class="md-tabs__link">
           
   
   General Design
@@ -257,11 +253,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../entity-component-system/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   Entity-Component System
@@ -387,30 +385,27 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -422,7 +417,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             General Design
@@ -436,7 +431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../general-design/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -455,31 +450,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Design Philosophy
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../general-design/design-philosophy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -489,53 +463,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#robustness-decentralization" class="md-nav__link">
-    <span class="md-ellipsis">
-      Robustness &amp; Decentralization
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#separation-of-logicalphysical-construct" class="md-nav__link">
-    <span class="md-ellipsis">
-      Separation of Logical/Physical Construct
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#flexibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      Flexibility
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -624,27 +551,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -656,7 +586,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Entity-Component System
@@ -670,7 +600,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../entity-component-system/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -692,7 +622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../entity-component-system/logical-abstraction/" class="md-nav__link">
+      <a href="../logical-abstraction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -714,7 +644,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../entity-component-system/implementation-architecture/" class="md-nav__link">
+      <a href="../implementation-architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -733,10 +663,31 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../entity-component-system/runtime-component-injection/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Runtime Component Injection Architecture
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -746,6 +697,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-image-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Host Image API
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#component-sdk-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Component SDK API
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -785,27 +783,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#robustness-decentralization" class="md-nav__link">
+  <a href="#architecture-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Robustness &amp; Decentralization
+      Architecture Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#separation-of-logicalphysical-construct" class="md-nav__link">
+  <a href="#host-image-api" class="md-nav__link">
     <span class="md-ellipsis">
-      Separation of Logical/Physical Construct
+      Host Image API
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#flexibility" class="md-nav__link">
+  <a href="#component-sdk-api" class="md-nav__link">
     <span class="md-ellipsis">
-      Flexibility
+      Component SDK API
     </span>
   </a>
   
@@ -827,26 +825,58 @@
 
 
 
-<h1 id="design-philosophy">Design Philosophy</h1>
-<p>Lithops is designed around a set of ideas and goals:
-robustness &amp; decentralized control,
-separation of logical/physical construct
-and flexibility.</p>
-<h2 id="robustness-decentralization">Robustness &amp; Decentralization</h2>
-<p>Lithops deploys a large number of self-autonomous agents over a cluster.
-There is no centralized control and the failure of one agent has minimal impact over the others.</p>
-<h2 id="separation-of-logicalphysical-construct">Separation of Logical/Physical Construct</h2>
-<p>In Lithops, the logical abstraction of a multi-agent system
-and how it functions physically are decoupled.</p>
-<h2 id="flexibility">Flexibility</h2>
-<p>At its core, Lithops tries to introduce minimal inductive bias over how agents should be designed and how they behave.</p>
-<p>Rather than a monolithic framework,
-Lithops is a set of building blocks that can be composed to create a wide range of multi-agent systems.
-Some of these building blocks may have assumptions of a certain aspect of agents,
-and they may have dependency on other building blocks.
-These building blocks may be considered subsystems or micro-frameworks;
-they interact with each other according to protocols,
-a concept similar to trait in Rust.</p>
+<h1 id="runtime-component-injection-architecture">Runtime Component Injection Architecture</h1>
+<p>This document discusses the high-level architecture
+of runtime component injection,
+an approach employed by Lithops to implement
+large scale, distributed and decentralized entity-component systems.</p>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>In runtime component injection:</p>
+<ul>
+<li>Each actor with all its components runs as a container;</li>
+<li>Each component runs as a self-contained, sandboxed package inside the actor container.</li>
+<li>When an actor is spawned, the actor container is created,
+then the component packages are pulled and run.</li>
+</ul>
+<h2 id="host-image-api">Host Image API</h2>
+<p>The host image refers to the base image of the actor container.
+This does not include any components but must provide syscall-like APIs
+that the components use to implement their functionalities.</p>
+<p>For the MVP, we provide a minimal set of APIs
+that are used the most frequently in a well-structured game project:</p>
+<ul>
+<li>Get component by class (gets the first component of the given type);</li>
+<li>Find component by class and tag.</li>
+</ul>
+<p>For reference, a tag is a semantic string
+associated with either a component or an actor.
+Each component or actor can have multiple tags.
+In game development,
+a component use tags to find
+other components it depends on.</p>
+<h2 id="component-sdk-api">Component SDK API</h2>
+<p>Component SDK API refers to the APIs that
+component code uses to access
+the syscall-like entity-component system core functionalities.</p>
+<p>This includes:</p>
+<ul>
+<li>Sending and receiving events to/from other components,
+either on the same or different actors.</li>
+<li>Calling exposed APIs from other components.</li>
+</ul>
+<p>In Lithops, we organize such APIs in an object-oriented manner
+similar to game engines.
+Specifically:</p>
+<ul>
+<li>Component code can get handles to actors or components.</li>
+<li>These handles expose APIs such as
+sending events, binding event dispatchers
+and calling APIs
+(similar to calling public functions
+on other actors/components in game engines).</li>
+<li>These handles automatically handle the cases where
+actor/components fail and restart.</li>
+</ul>
 
 
 
@@ -878,7 +908,7 @@ a concept similar to trait in Rust.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lithops General Design">
+          <a href="../implementation-architecture/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Implementation Architecture">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -888,27 +918,11 @@ a concept similar to trait in Rust.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Lithops General Design
+                Implementation Architecture
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../../communication-mechanism-design/" class="md-footer__link md-footer__link--next" aria-label="Next: Lithops - Communication Mechanism Design">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Lithops - Communication Mechanism Design
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     

@@ -31,6 +31,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/logical-abstraction/"/>
     </url>
     <url>
+        <loc>Noneentity-component-system/runtime-component-injection/</loc>
+        <lastmod>2025-03-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Noneentity-component-system/runtime-component-injection/"/>
+    </url>
+    <url>
         <loc>Nonegeneral-design/</loc>
         <lastmod>2025-03-03</lastmod>
         <changefreq>daily</changefreq>
