@@ -967,6 +967,10 @@ each instance of a component is encapsulated in its own process.</p>
 <li>Scales to large number of actors with different combinations of components.</li>
 <li>Allows dynamically adding and removing components
   after an actor is spawned (like in game engines).</li>
+<li>Scales well in situations where
+there is a single actor so large it cannot fit on one machine,
+as components in an actor are distributed
+across multiple services and nodes in nature.</li>
 </ul>
 <p><strong>Cons:</strong></p>
 <ul>
