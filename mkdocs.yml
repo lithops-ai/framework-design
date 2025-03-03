@@ -82,3 +82,4 @@ nav:
     - entity-component-system/index.md
     - entity-component-system/logical-abstraction.md
     - entity-component-system/implementation-architecture.md
+    - entity-component-system/runtime-component-injection.md
