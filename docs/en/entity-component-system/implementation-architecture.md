@@ -36,6 +36,7 @@ can be potentially large.
 If we were to create an image for each actor with a different set of components,
 the number of docker images would blow up.
 - Does not allow adding or removing components at runtime.
+- Cannot handle very large actors because each actor must fit on one node.
 
 ### One Service Per Component
 
@@ -86,6 +87,10 @@ each instance of a component is encapsulated in its own process.
 - Scales to large number of actors with different combinations of components.
 - Allows dynamically adding and removing components
   after an actor is spawned (like in game engines).
+- Scales well in situations where
+there is a single actor so large it cannot fit on one machine,
+as components in an actor are distributed
+across multiple services and nodes in nature.
 
 **Cons:**
 
@@ -133,6 +138,7 @@ after an actor is spawned (like in game engines).
 - The process of component injection can introduce unexpected bugs.
 For example, if two components use the same temporary directory in the host container,
 they may interfere with each other and cause unwanted behavior even if they have no bugs on their own.
+- Cannot handle very large actors because each actor must fit on one node.
 
 ## Runtime Component Injection
 
