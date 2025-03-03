@@ -1,191 +1,170 @@
-# Implementation Architecture
+# Lithops Distributed ECS Implementation Architecture
 
-!!! note
-    This is just a tentative design.
+This document discusses the high-level architecture
+that Lithops employs to implement
+large scale, distributed and decentralized entity-component systems.
 
-This document discusses a number of approaches
-for implementing large-scale,
-distributed and decentralized entity-component systems.
+## Architecture Overview
 
-Currently, we take the third approach,
-i.e., runtime component injection.
+Lithops employs the runtime component injection architecture
+for implementing distributed ECS
+and adds an abstraction named "service"
+for implementing API services that need load-balancing,
+such as image generation.
 
-## Special Challenges with Distributed ECS
+There are four core concepts in the ECS architecture.
 
-Since Lithops implements distributed, large scale entity-component system,
-there are some unique challenges that do not arise in general game development.
+### Actor
 
-### Error Handling
+Each actor with all its components runs as a container.
+An actor is assumed to be relatively lightweight
+and can fit on a single machine.
 
-Lithops ECS is designed to be high-available and fault-tolerant.
-bugs or null reference errors on an actor/component must not crash the entire system.
+### Component
 
-### Concurrency
+Each component runs as a self-contained, sandboxed package inside the actor container.
+When an actor is spawned, the actor container is created,
+then the component packages are pulled and run.
 
-Concurrency is an issue rarely encountered in game development,
-because mainstream game engines are generally single-threaded
-(known as the game thread).
-Despite the performance issues,
-this is a deliberate design choice
-that eliminates concurrency-specific concerns
-for artists and game developers,
-a population with generally no strong background
-in software development and system programming.
+### Service
 
-However, large-scale distributed ECS systems are
-inherently concurrent and asynchronous,
-and it is unrealistic to employ a single-threaded approach
-because the performance degradation would be unacceptable.
+A service is a load-balanced API service endpoint
+providing stateless, potentially heavily-depended API services,
+such as text and image generation.
 
-## Architecture Choices
+### Core Functionality Service
 
-There are several schemes to implement the Entity-Component-System (ECS) architecture.
+This is a core functionality service endpoint
+(deployed and load-balanced automatically)
+that all actors/components use
+to access Lithops ECS core functionalities.
 
-### One Container Per Actor
+All communications, event passing and API calls
+are proxied through this service.
 
-This is the easiest scheme to think of.
-In this scheme,
-each actor is associated with a single container,
-and all components in that actor are isolated in that container.
+## Host Image API
 
-**Pros:**
+The host image refers to the base image of the actor container.
+This does not include any components but must provide syscall-like APIs
+that the components use to implement their functionalities.
 
-- Each actor with its components is isolated,
-and failure within one actor does not affect the others.
-- There is minimal communication cost between multiple components on a single actor.
+For the MVP, we provide a minimal set of APIs
+that are used the most frequently in a well-structured game project:
 
-**Cons:**
+- Get component by class (gets the first component of the given type);
+- Find component by class and tag.
 
-- Even though the number of components is limited,
-the number of possible combinations,
-and hence the number of actor types,
-can be potentially large.
-If we were to create an image for each actor with a different set of components,
-the number of docker images would blow up.
-- Does not allow adding or removing components at runtime.
-- Cannot handle very large actors because each actor must fit on one node.
+For reference, a tag is a semantic string
+associated with either a component or an actor.
+Each component or actor can have multiple tags.
+In game development,
+a component use tags to find
+other components it depends on.
 
-### One Service Per Component
+## Component SDK API
 
-In this scheme,
-each type of component is implemented as a service
-which automatically load-balances across multiple nodes
-as the number of actors using this component grows.
-All actors using the same type of component
-connects to the same service endpoint.
+Component SDK API refers to the APIs that
+component code uses to access
+the syscall-like entity-component system core functionalities.
 
-#### General Architecture
+This includes:
 
-Physically, each type of component is exposed as a service
-which may be deployed over one or multiple nodes.
-The idea is, component services are guaranteed to be always available,
-and scales automatically with the number of actors using them.
+- Sending and receiving events to/from other components,
+either on the same or different actors.
+- Calling exposed APIs on other components/services.
 
-For example, consider a multi-agent system:
-
-```mermaid
-graph TD
-    A1(Actor 1) --> C11(Component 1)
-    A1 --> C12(Component 2)
-    A2(Actor 2) --> C21(Component 1)
-```
-
-The implementation might look like:
-
-```mermaid
-graph TD
-    A1(Actor 1) --> C1
-    A2(Actor 2) --> C1
-    A1 --> C2
-    C1(Component 1 Service)
-    C2(Component 2 Service)
-    C1 --> N1(Node 1)
-    C1 --> N2(Node 2)
-    C2 --> N2
-```
-
-#### Component Service Implementation
-
-To ensure isolation across different component instances,
-each instance of a component is encapsulated in its own process.
-
-**Pros:**
-
-- Scales to large number of actors with different combinations of components.
-- Allows dynamically adding and removing components
-  after an actor is spawned (like in game engines).
-- Scales well in situations where
-there is a single actor so large it cannot fit on one machine,
-as components in an actor are distributed
-across multiple services and nodes in nature.
-
-**Cons:**
-
-- It can be hard to ensure isolation between
-  different instances of the same component type
-  attached to different actors,
-  especially when those instances are deployed on the same node.
-- Each inter-component event requires a round-trip over the cluster network,
-  even for the components on the same actor.
-
-### Runtime Component Injection
-
-This scheme is similar to "One Container Per Actor",
-in that each actor gets its own container.
-The difference is that instead of creating an image
-for each different combination of components,
-there is only one image providing the basic functionalities
-like event passing.
-When an actor is spawn,
-a container is created,
-then the components are injected into the container.
-
-The critical design choice with this architecture is
-how to package the runtime code for each component.
-Apparently, we want something more lightweight than a container
-since the components are already running in a container.
-May look into existing sandboxing solutions like snap and AppImage.
-
-In general, the means of component packaging/virtualization should:
-
-1. Be lightweight;
-2. Ensure isolation between different components on the same actor.
-
-**Pros:**
-
-- Ensures isolation between different actors.
-- Keeps the number of packages at a minimum
-even when there are a large number of actors
-with different combinations of components.
-- Allows dynamically adding and removing components
-after an actor is spawned (like in game engines).
-
-**Cons:**
-
-- The process of component injection can introduce unexpected bugs.
-For example, if two components use the same temporary directory in the host container,
-they may interfere with each other and cause unwanted behavior even if they have no bugs on their own.
-- Cannot handle very large actors because each actor must fit on one node.
-
-## Runtime Component Injection
-
-Currently, we employ the runtime component injection approach
-for implementing the ECS architecture.
-
-The design ideas are:
-
-- Components may be buggy so there needs to be
-some sandboxing for each component.
-- Component sandboxing should incur minimal overhead
-since we're already inside a container.
-- Components should be self-contained to
-avoid dependency and environment configuration issues.
-
+In Lithops, we organize such APIs in an object-oriented manner
+similar to game engines.
 Specifically:
 
-- Use AppImage to package each component into a self-contained binary.
-- Use BubbleWrap to sandbox each component AppImage
-and provide a safe, ephemeral mount point for it to write to,
-similar to a Docker volume (expect that it does not persist).
-Restrict AppImages from accessing the host filesystem
-to avoid multiple components sharing the same file system and interfering with each other.
+- Component code can get handles to actors,
+components or services.
+- These handles expose APIs such as
+sending events, binding event dispatchers
+and calling APIs
+(similar to calling public functions
+on other actors/components in game engines).
+- These handles automatically handle the cases where
+actor/components fail and restart.
+
+## System Implementation Overview
+
+On a lower level,
+a running ECS system may look like the following:
+
+```mermaid
+graph TD
+    A1(Actor Container 1) --> S[Lithops ECS Core Functionality Service]
+    A2(Actor Container 2) --> S
+    S --> S1[API Service 1]
+    S --> S2[API Service 2]
+```
+
+In the diagram above,
+the nodes with rounded corners are lightweight containers
+and those with squared corners are load-balanced service endpoints.
+
+On a lower level,
+all communications happen through the core functionality service.
+For example, if an actor wants to broadcast an event to the bound listeners,
+the process may look like this:
+
+```mermaid
+graph TD
+    A1(Actor Container 1) --> S[Lithops ECS Core Functionality Service]
+    S --> A2(Actor Container 2)
+    S --> A3(Actor Container 3)
+    S --> A4(Actor Container 4)
+```
+
+More specifically, the event broadcast process happens in these steps:
+
+1. An entity (either an actor or a component)
+tells the core functionality service
+that it would like to broadcast an event.
+2. The core functionality service
+looks up the listeners
+and sends the event to each of them.
+3. Optionally, the core functionality service
+may return two handles to the entity initiating the broadcast,
+one for signaling when all receiving entities have received the event,
+and another for when they have finished processing it.
+
+The core functionality service
+keeps a list of logical listeners
+as well the entity initiating the broadcast in a database.
+This ensures that the event broadcast is guaranteed to success
+even when one or more receiving entities fail and must be restarted.
+
+Calling an API on another actor/component happens in a similar fashion.
+For example, if actor A wants to call an API on actor B:
+
+- Actor A tells the core functionality service to call an API with certain parameters on actor B.
+- The core functionality service takes the query and calls the API endpoint on actor B.
+- Actor B returns a response and the core functionality service forwards it back to actor A.
+
+Such a process is illustrated in the following diagram:
+
+```mermaid
+graph TD
+    A(Actor A) --> S[Core Functionality Service] --> B(Actor B) --> S --> A
+```
+
+It is a deliberate design that
+everything involving another actor/component
+must go through the core functionality service.
+This ensures that actor container failures and restarts are handled properly
+and component code can reference logical actors
+which are assumed to be always available.
+
+API calls to load-balanced API services happen in a similar fashion.
+All API calls to load-balanced services like image generation
+are proxied through the core functionality service, like this:
+
+```mermaid
+graph TD
+    A(Actor A) --> S[Core Functionality Service] --> S1[API Service 1] --> S[Core Functionality Service] --> A
+```
+
+Everything looks the same as calling an exposed API on an actor/component,
+except that the callee is a load-balanced service, not a container.
