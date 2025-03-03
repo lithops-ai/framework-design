@@ -1,4 +1,4 @@
-# Implementation Architecture Overview
+# Overview of Distributed ECS Implementation Approaches
 
 !!! note
     This is just a tentative design.
