@@ -1,6 +1,4 @@
-# Entity Component System
-
-## Entity Component System Overview
+# Logical Abstraction
 
 Lithops employs an entity-component-system (ECS) style architecture.
 

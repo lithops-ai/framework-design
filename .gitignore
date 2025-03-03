@@ -1,3 +1,9 @@
 # IDE user specific files
 /.vscode
 /.idea
+
+# Python cache
+*__pycache__
+
+# Build artifacts
+/site

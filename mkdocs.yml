@@ -70,18 +70,15 @@ extra_javascript:
 extra_css:
   - stylesheets/extra.css
 
-extra:
-  alternate:
-    - name: English
-      # workaround for Github Pages
-      link: /dev000/
-      lang: en
-
-# nav:
-#   - Home:
-#     - index.md
-
-#   - "General Design":
-#     - general-design/index.md
-#     - general-design/design-philosophy.md
-
+nav:
+  - Home:
+    - index.md
+  - "General Design":
+    - general-design/index.md
+    - general-design/design-philosophy.md
+  - "Communication Mechanism":
+    - communication-mechanism-design/index.md
+  - "Entity-Component System":
+    - entity-component-system/index.md
+    - entity-component-system/logical-abstraction.md
+    - entity-component-system/implementation-architecture.md
