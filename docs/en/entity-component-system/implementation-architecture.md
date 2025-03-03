@@ -3,6 +3,13 @@
 !!! note
     This is just a tentative design.
 
+This document discusses a number of approaches
+for implementing large-scale,
+distributed and decentralized entity-component systems.
+
+Currently, we take the third approach,
+i.e., runtime component injection.
+
 ## Architecture Choices
 
 There are several schemes to implement the Entity-Component-System (ECS) architecture.
@@ -28,6 +35,7 @@ and hence the number of actor types,
 can be potentially large.
 If we were to create an image for each actor with a different set of components,
 the number of docker images would blow up.
+- Does not allow adding or removing components at runtime.
 
 ### One Service Per Component
 
@@ -76,6 +84,8 @@ each instance of a component is encapsulated in its own process.
 **Pros:**
 
 - Scales to large number of actors with different combinations of components.
+- Allows dynamically adding and removing components
+  after an actor is spawned (like in game engines).
 
 **Cons:**
 
@@ -115,9 +125,34 @@ In general, the means of component packaging/virtualization should:
 - Keeps the number of packages at a minimum
 even when there are a large number of actors
 with different combinations of components.
+- Allows dynamically adding and removing components
+after an actor is spawned (like in game engines).
 
 **Cons:**
 
 - The process of component injection can introduce unexpected bugs.
 For example, if two components use the same temporary directory in the host container,
 they may interfere with each other and cause unwanted behavior even if they have no bugs on their own.
+
+## Runtime Component Injection
+
+Currently, we employ the runtime component injection approach
+for implementing the ECS architecture.
+
+The design ideas are:
+
+- Components may be buggy so there needs to be
+some sandboxing for each component.
+- Component sandboxing should incur minimal overhead
+since we're already inside a container.
+- Components should be self-contained to
+avoid dependency and environment configuration issues.
+
+Specifically:
+
+- Use AppImage to package each component into a self-contained binary.
+- Use BubbleWrap to sandbox each component AppImage
+and provide a safe, ephemeral mount point for it to write to,
+similar to a Docker volume (expect that it does not persist).
+Restrict AppImages from accessing the host filesystem
+to avoid multiple components sharing the same file system and interfering with each other.
