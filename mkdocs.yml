@@ -79,9 +79,9 @@ extra:
 
 # nav:
 #   - Home:
-#     - index.md
+#     - logical-abstraction.md
 
 #   - "General Design":
-#     - general-design/index.md
+#     - general-design/logical-abstraction.md
 #     - general-design/design-philosophy.md
 

@@ -1,3 +1,6 @@
 # IDE user specific files
 /.vscode
 /.idea
+
+# Python cache
+*__pycache__
