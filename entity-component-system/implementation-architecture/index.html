@@ -931,6 +931,7 @@ can be potentially large.
 If we were to create an image for each actor with a different set of components,
 the number of docker images would blow up.</li>
 <li>Does not allow adding or removing components at runtime.</li>
+<li>Cannot handle very large actors because each actor must fit on one node.</li>
 </ul>
 <h3 id="one-service-per-component">One Service Per Component</h3>
 <p>In this scheme,
@@ -1015,6 +1016,7 @@ after an actor is spawned (like in game engines).</li>
 <li>The process of component injection can introduce unexpected bugs.
 For example, if two components use the same temporary directory in the host container,
 they may interfere with each other and cause unwanted behavior even if they have no bugs on their own.</li>
+<li>Cannot handle very large actors because each actor must fit on one node.</li>
 </ul>
 <h2 id="runtime-component-injection_1">Runtime Component Injection</h2>
 <p>Currently, we employ the runtime component injection approach
