@@ -70,13 +70,6 @@ extra_javascript:
 extra_css:
   - stylesheets/extra.css
 
-extra:
-  alternate:
-    - name: English
-      # workaround for Github Pages
-      link: /dev000/
-      lang: en
-
 nav:
   - Home:
     - index.md
