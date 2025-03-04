@@ -42,7 +42,7 @@ to access Lithops ECS core functionalities.
 All communications, event passing and API calls
 are proxied through this service.
 
-## Host Image API
+## Actor API
 
 The host image refers to the base image of the actor container.
 This does not include any components but must provide syscall-like APIs
@@ -87,84 +87,20 @@ on other actors/components in game engines).
 - These handles automatically handle the cases where
 actor/components fail and restart.
 
-## System Implementation Overview
+## Messaging & API Calls
 
-On a lower level,
-a running ECS system may look like the following:
+Actors and components may use the core service to get handles,
+but once that handle is acquired,
+it accesses the handle directly if possible
+and API calls are not proxied through the core service.
 
-```mermaid
-graph TD
-    A1(Actor Container 1) --> S[Lithops ECS Core Functionality Service]
-    A2(Actor Container 2) --> S
-    S --> S1[API Service 1]
-    S --> S2[API Service 2]
-```
+Such a calling mechanism have different semantic implications in different scenarios:
 
-In the diagram above,
-the nodes with rounded corners are lightweight containers
-and those with squared corners are load-balanced service endpoints.
-
-On a lower level,
-all communications happen through the core functionality service.
-For example, if an actor wants to broadcast an event to the bound listeners,
-the process may look like this:
-
-```mermaid
-graph TD
-    A1(Actor Container 1) --> S[Lithops ECS Core Functionality Service]
-    S --> A2(Actor Container 2)
-    S --> A3(Actor Container 3)
-    S --> A4(Actor Container 4)
-```
-
-More specifically, the event broadcast process happens in these steps:
-
-1. An entity (either an actor or a component)
-tells the core functionality service
-that it would like to broadcast an event.
-2. The core functionality service
-looks up the listeners
-and sends the event to each of them.
-3. Optionally, the core functionality service
-may return two handles to the entity initiating the broadcast,
-one for signaling when all receiving entities have received the event,
-and another for when they have finished processing it.
-
-The core functionality service
-keeps a list of logical listeners
-as well the entity initiating the broadcast in a database.
-This ensures that the event broadcast is guaranteed to success
-even when one or more receiving entities fail and must be restarted.
-
-Calling an API on another actor/component happens in a similar fashion.
-For example, if actor A wants to call an API on actor B:
-
-- Actor A tells the core functionality service to call an API with certain parameters on actor B.
-- The core functionality service takes the query and calls the API endpoint on actor B.
-- Actor B returns a response and the core functionality service forwards it back to actor A.
-
-Such a process is illustrated in the following diagram:
-
-```mermaid
-graph TD
-    A(Actor A) --> S[Core Functionality Service] --> B(Actor B) --> S --> A
-```
-
-It is a deliberate design that
-everything involving another actor/component
-must go through the core functionality service.
-This ensures that actor container failures and restarts are handled properly
-and component code can reference logical actors
-which are assumed to be always available.
-
-API calls to load-balanced API services happen in a similar fashion.
-All API calls to load-balanced services like image generation
-are proxied through the core functionality service, like this:
-
-```mermaid
-graph TD
-    A(Actor A) --> S[Core Functionality Service] --> S1[API Service 1] --> S[Core Functionality Service] --> A
-```
-
-Everything looks the same as calling an exposed API on an actor/component,
-except that the callee is a load-balanced service, not a container.
+- In case of calling a service: Operation guaranteed to success,
+since the service is inherently load-balanced and distributed.
+- In case of calling a function on a component: Operation may fail or timeout,
+since the component may be invalid (e.g., null reference or pending kill).
+- In case of broadcasting an event:
+Some of the listeners may be invalid and may not receive the event,
+but the semantics of event broadcast is the same with that in game engines,
+i.e., the event broadcaster does not care about who received the event or not.
