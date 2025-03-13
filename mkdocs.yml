@@ -83,3 +83,4 @@ nav:
     - entity-component-system/logical-abstraction.md
     - entity-component-system/implementation-architecture-choices.md
     - entity-component-system/implementation-architecture.md
+    - entity-component-system/components-management.md
