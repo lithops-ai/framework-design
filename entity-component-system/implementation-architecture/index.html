@@ -765,9 +765,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#host-image-api" class="md-nav__link">
+  <a href="#actor-api" class="md-nav__link">
     <span class="md-ellipsis">
-      Host Image API
+      Actor API
     </span>
   </a>
   
@@ -783,9 +783,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#system-implementation-overview" class="md-nav__link">
+  <a href="#messaging-api-calls" class="md-nav__link">
     <span class="md-ellipsis">
-      System Implementation Overview
+      Messaging &amp; API Calls
     </span>
   </a>
   
@@ -885,9 +885,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#host-image-api" class="md-nav__link">
+  <a href="#actor-api" class="md-nav__link">
     <span class="md-ellipsis">
-      Host Image API
+      Actor API
     </span>
   </a>
   
@@ -903,9 +903,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#system-implementation-overview" class="md-nav__link">
+  <a href="#messaging-api-calls" class="md-nav__link">
     <span class="md-ellipsis">
-      System Implementation Overview
+      Messaging &amp; API Calls
     </span>
   </a>
   
@@ -957,7 +957,7 @@ that all actors/components use
 to access Lithops ECS core functionalities.</p>
 <p>All communications, event passing and API calls
 are proxied through this service.</p>
-<h2 id="host-image-api">Host Image API</h2>
+<h2 id="actor-api">Actor API</h2>
 <p>The host image refers to the base image of the actor container.
 This does not include any components but must provide syscall-like APIs
 that the components use to implement their functionalities.</p>
@@ -997,67 +997,22 @@ on other actors/components in game engines).</li>
 <li>These handles automatically handle the cases where
 actor/components fail and restart.</li>
 </ul>
-<h2 id="system-implementation-overview">System Implementation Overview</h2>
-<p>On a lower level,
-a running ECS system may look like the following:</p>
-<pre class="mermaid"><code>graph TD
-    A1(Actor Container 1) --&gt; S[Lithops ECS Core Functionality Service]
-    A2(Actor Container 2) --&gt; S
-    S --&gt; S1[API Service 1]
-    S --&gt; S2[API Service 2]</code></pre>
-<p>In the diagram above,
-the nodes with rounded corners are lightweight containers
-and those with squared corners are load-balanced service endpoints.</p>
-<p>On a lower level,
-all communications happen through the core functionality service.
-For example, if an actor wants to broadcast an event to the bound listeners,
-the process may look like this:</p>
-<pre class="mermaid"><code>graph TD
-    A1(Actor Container 1) --&gt; S[Lithops ECS Core Functionality Service]
-    S --&gt; A2(Actor Container 2)
-    S --&gt; A3(Actor Container 3)
-    S --&gt; A4(Actor Container 4)</code></pre>
-<p>More specifically, the event broadcast process happens in these steps:</p>
-<ol>
-<li>An entity (either an actor or a component)
-tells the core functionality service
-that it would like to broadcast an event.</li>
-<li>The core functionality service
-looks up the listeners
-and sends the event to each of them.</li>
-<li>Optionally, the core functionality service
-may return two handles to the entity initiating the broadcast,
-one for signaling when all receiving entities have received the event,
-and another for when they have finished processing it.</li>
-</ol>
-<p>The core functionality service
-keeps a list of logical listeners
-as well the entity initiating the broadcast in a database.
-This ensures that the event broadcast is guaranteed to success
-even when one or more receiving entities fail and must be restarted.</p>
-<p>Calling an API on another actor/component happens in a similar fashion.
-For example, if actor A wants to call an API on actor B:</p>
+<h2 id="messaging-api-calls">Messaging &amp; API Calls</h2>
+<p>Actors and components may use the core service to get handles,
+but once that handle is acquired,
+it accesses the handle directly if possible
+and API calls are not proxied through the core service.</p>
+<p>Such a calling mechanism have different semantic implications in different scenarios:</p>
 <ul>
-<li>Actor A tells the core functionality service to call an API with certain parameters on actor B.</li>
-<li>The core functionality service takes the query and calls the API endpoint on actor B.</li>
-<li>Actor B returns a response and the core functionality service forwards it back to actor A.</li>
+<li>In case of calling a service: Operation guaranteed to success,
+since the service is inherently load-balanced and distributed.</li>
+<li>In case of calling a function on a component: Operation may fail or timeout,
+since the component may be invalid (e.g., null reference or pending kill).</li>
+<li>In case of broadcasting an event:
+Some of the listeners may be invalid and may not receive the event,
+but the semantics of event broadcast is the same with that in game engines,
+i.e., the event broadcaster does not care about who received the event or not.</li>
 </ul>
-<p>Such a process is illustrated in the following diagram:</p>
-<pre class="mermaid"><code>graph TD
-    A(Actor A) --&gt; S[Core Functionality Service] --&gt; B(Actor B) --&gt; S --&gt; A</code></pre>
-<p>It is a deliberate design that
-everything involving another actor/component
-must go through the core functionality service.
-This ensures that actor container failures and restarts are handled properly
-and component code can reference logical actors
-which are assumed to be always available.</p>
-<p>API calls to load-balanced API services happen in a similar fashion.
-All API calls to load-balanced services like image generation
-are proxied through the core functionality service, like this:</p>
-<pre class="mermaid"><code>graph TD
-    A(Actor A) --&gt; S[Core Functionality Service] --&gt; S1[API Service 1] --&gt; S[Core Functionality Service] --&gt; A</code></pre>
-<p>Everything looks the same as calling an exposed API on an actor/component,
-except that the callee is a load-balanced service, not a container.</p>
 
 
 
