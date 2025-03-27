@@ -5,5 +5,8 @@
 # Python cache
 *__pycache__
 
+# Virtual environment
+/.venv
+
 # Build artifacts
 /site
